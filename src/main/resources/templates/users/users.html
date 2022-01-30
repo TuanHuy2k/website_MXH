@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="vn">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/friend.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="/js/friend.js"></script>
+    <script src="/js/cookie.js"></script>
+
+    <title></title>
+
+</head>
+<header class = "sticky-header">
+    <nav class="navbar">
+        <a class="brand-logo" href="/">
+            <img class="logo-img" src="images/zalo.png"/>
+        </a>
+
+        <div class="navbar-search">
+            <input id="nav-search" onkeyup="searchUser(event)" type="text" placeholder="Search ...">
+        </div>
+
+        <ul class="pull-right">
+            <li>
+                <a href="/">
+                    <i class="fas fa-home"></i>
+                    <p class="nav-item">HomePage</p>
+                </a>
+            </li>
+            <li>
+                <a href="/profile">
+                    <i class="fas fa-user"></i>
+                    <p class="nav-item">Profile</p>
+                </a>
+            </li>
+            <li>
+                <a href="/friends">
+                    <i class="fas fa-user-friends"></i>
+                    <p class="nav-item">Friends</p>
+                </a>
+            </li>
+            <li class="nav-item-mess">
+                <a href="/message">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <p class="nav-item">Message</p>
+                </a>
+            </li>
+            <li id="noti_Container">
+                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN. -->
+                <div id="noti_Button" onclick="myFunction()">
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <p class="nav-item">Notify</p>
+                    </a>
+                </div>
+
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications" >
+                    <h3>Notifications</h3>
+                    <div style="height:300px;"></div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
+            <li>
+                <a href="/logout" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <p class="nav-item">Log out</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<body>
+
+<div id="than" style="margin-top: 50px; margin-bottom: 20px">
+    <div id="MakeFriend">
+        <h1 style="margin-bottom: 15px">Danh sách người dùng tìm kiếm</h1>
+        <div style="display: flex; flex-wrap: wrap">
+            <div id="People" th:each="user: ${users}">
+                <div class="Image_Friend" style="max-width: 230px; margin-right: 40px">
+                    <img th:src="${user.avatarUrl}" style="width: 200px; height: 200px" th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''"/>
+                    <div style="text-align: center; color: red; font-weight: bold"><span th:text="${user.username}"></span></div>
+                    <button th:data-id="${user.id}">Xem thông tin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${users.size() == 0}" style="margin-bottom: 40px">
+        <h4>Khong tim thay ket qua!</h4>
+    </div>
+</div>
+
+<script>
+    function searchUser(event) {
+        const urlSearchUser = 'http://localhost:8081/users';
+        var keyword = document.querySelector("#nav-search").value;
+        if (event.keyCode === 13) {
+            window.location.href = urlSearchUser + "?keyword=" + keyword;
+        }
+    }
+
+    function closeInfoUser() {
+
+    }
+</script>
+</body>
+</html>

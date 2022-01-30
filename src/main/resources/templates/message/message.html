@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
+
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_message.css">
+</head>
+<body>
+
+    <!-- header -->
+    <header class = "sticky-header">
+        <nav class="navbar">
+            <a class="brand-logo" href="/">
+                <img class="logo-img" src="/images/zalo.png"/>
+            </a>
+
+            <div class="navbar-search">
+                <input id="nav-search" onkeyup="searchUser(event)" type="text" placeholder="Search ...">
+            </div>
+
+            <ul class="pull-right">
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                        <p class="nav-item">HomePage</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile">
+                        <i class="fas fa-user"></i>
+                        <p class="nav-item">Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/friends">
+                        <i class="fas fa-user-friends"></i>
+                        <p class="nav-item">Friends</p>
+                    </a>
+                </li>
+                <li class="nav-item-mess">
+                    <a href="#">
+                        <i class="fab fa-facebook-messenger"></i>
+                        <p class="nav-item">Message</p>
+                    </a>
+                </li>
+                <li id="noti_Container">
+                    <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+                    
+                    <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
+                    <div id="noti_Button" onclick="myFunction()">
+                        <a href="#">
+                            <i class="fas fa-bell"></i>
+                            <p class="nav-item">Notify</p>
+                        </a>
+                    </div>    
+    
+                    <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                    <div id="notifications" >
+                        <h3>Notifications</h3>
+                        <div style="height:300px;"></div>
+                        <div class="seeAll"><a href="#">See All</a></div>
+                    </div>
+                </li>
+                <li>
+                    <a href="/logout" id="logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <p class="nav-item">Log out</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- end header  -->
+
+  <div class="grid wide container">
+        <div class="row" style="display: flex">
+            <div class="col c-3">
+
+                <div class="message-users">
+<!--                    <div class="message-head">-->
+<!--                        <h4>Chat</h4>-->
+<!--                    </div>-->
+                    <div class="message-people-srch">
+                        <form method="post">
+                            <input class="search" type="text" placeholder="Tìm kiếm trên Messenger">
+                            <button style="right:-5px" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                        <div class="btn-group add-group" role="group">
+<!--                            <button id="btnGroupDrop2" type="button" class="btn group dropdown-toggle user-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                              All-->
+<!--                            </button>-->
+                        </div>
+                    </div>
+<!--                    custom-->
+                    <div class="mesg-peple">
+                        <ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list ps-container ps-theme-default ps-active-y"
+                            id="usersList"
+                            data-ps-id="7406a7b5-5123-a2ed-a9a7-ceef2f88b15d">
+                    </ul>
+                    </div>
+                </div>  
+            </div>
+            <div class="col c-9">
+                
+                <div class="mesg-area-head">
+                    <div class="active-user">
+                        <figure><img src="images/message/friend-avatar3.jpg" alt="">
+                            <span class="status f-online"></span>
+                        </figure>
+                        <div>
+                            <h10 class="unread" id="selectedUserId"></h10>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-history">
+                    <ul class="chat-history-ul conversations">
+
+                    </ul>
+
+                </div>
+                <div class="message-writing-box">
+                    <div class="text-area">
+                        <textarea id="message-to-send" name="message-to-send" placeholder="Type your message" rows="3"></textarea>
+                        <button id="sendBtn">Send</button>
+                    </div>
+
+<!--                    <div class="attach-file">-->
+<!--                        <label class="fileContainer">-->
+<!--                            <i class="ti-clip"></i>-->
+<!--                            <input type="file">-->
+<!--                        </label>-->
+<!--                    </div>-->
+                </div>
+            </div> 
+            
+            </div>
+        </div>
+    </div>
+    <script id="message-response-template" type="text/x-handlebars-template">
+        <li>
+            <figure><img src="/images/default-avatar.jpg" alt=""></figure>
+            <div class="text-box">
+                <p>{{response}}</p>
+                <span><i class="ti-check"></i><i class="ti-check"></i> {{time}}</span>
+            </div>
+        </li>
+    </script>
+
+    <script id="message-template" type="text/x-handlebars-template">
+        <li class="me">
+            <figure><img src="/images/default-avatar.jpg" alt=""></figure>
+            <div class="text-box">
+                <p>{{messageOutput}}</p>
+                <span><i class="ti-check"></i><i class="ti-check"></i> {{time}}</span>
+            </div>
+        </li>
+    </script>
+
+</body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--<script src="/js/message.js"></script>-->
+<script src="/js/chat.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/cookie.js"></script>
+
+
+<script>
+    window.onload = function() {
+        fetchAllUsers();
+    }
+
+    const urlSearchUser = 'http://localhost:8081/users';
+
+    function searchUser(event) {
+        var keyword = document.querySelector("#nav-search").value;
+        if (event.keyCode === 13) {
+            window.location.href = urlSearchUser + "?keyword=" + keyword;
+        }
+    }
+</script>
+
+<script>
+    document.getElementById("logout").onclick = function(){
+        window.location.href='http://localhost:8081'
+    }
+</script>
+<script>
+    var x = document.getElementById("notifications");
+    var noti_counter = document.getElementById("noti_Counter");
+
+    function myFunction() {
+    if(x.style.display === "none"){
+        x.style.display = "block";  
+    } 
+    else {
+        x.style.display = "none";
+    }
+}   
+
+    x.onclick = () => {
+        if(x.style.display === "block"){
+        x.style.display = "block";  
+        } 
+        else {
+            x.style.display = "none";
+        }
+    }
+</script>
+</html>

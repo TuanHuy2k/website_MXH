@@ -1,0 +1,126 @@
+#head{
+    margin: auto;
+    margin-top: 50px;
+    width: 1200px;
+    height: 60px;
+    border: 1px solid black;
+}
+#head-left{
+    margin-top: 5px;
+    float: left;
+    width: 30%;
+}
+#head-right{
+    margin-top: 5px;
+    float: right;
+    width: 45%;
+}
+#logo{
+    margin-left: 25px;
+    border-radius: 5px;
+    float: left;
+    margin-top: 5px;
+    height: 40px;
+    width: 40px;
+}
+.fa-user-friends {
+    color: black;
+}
+
+#Search{
+    margin-left: 10px;
+    display: inline-block;
+    margin-top: 7px;
+}
+#Search input{
+    border-radius: 5px;
+    width: 200px;
+    height: 25px;
+}
+#Search i{
+    margin-left: 10px;
+    font-size: 25px
+}
+ul{
+
+    list-style-type: none;
+    margin:0px;
+    padding:0px;
+
+
+}
+ul li{
+
+    margin-right: 50px;
+    display: inline-block;
+
+}
+li i{
+    font-size: 35px;
+}
+#than{
+    width: 1200px;
+    margin: auto;
+}
+#MakeFriend{
+    width: 1200px;
+}
+#People{
+    height: 300px;
+}
+#People i{
+    font-size: 50px;
+    margin-top: 60px;
+    margin-right: 10px;
+}
+.Image_Friend{
+    margin-right: 15px;
+    float: left;
+    height: 265px;
+    width: 200px;
+    border: 1px solid black;
+}
+.Image_Friend img{
+    width: 200px;
+}
+.Image_Friend button{
+    width: 180px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+#SearchFriend{
+    display: inline-block;
+    margin-left: 800px;
+    margin-bottom: 50px;
+}
+#ListFriend h1{
+    display: inline-block;
+}
+.Friend{
+    height: 200px;
+    width: 1200px;
+    margin-left: 100px;
+}
+.Friend img{
+    width: 200px;
+    height: 180px;
+    float: left;
+}
+.Friend .infor{
+    display: inline-block;
+    width: 900px;
+    margin-left: 50px;
+}
+.infor h2, p{
+    margin: 10px;
+    display: inline-block;
+
+}
+.infor i{
+    display: inline-block;
+}
+.infor button{
+    margin-right: 30px;
+}
+
+

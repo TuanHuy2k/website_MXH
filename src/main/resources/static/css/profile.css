@@ -1,0 +1,203 @@
+#body{
+    z-index: 2;
+    opacity:1;
+
+}
+#Fix{
+    display: none;
+    z-index: 1;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    margin-top:350px;
+    width: 400px;
+    height: 450px;
+    margin-left: 500px;
+
+}
+
+.fa-user {
+    color: black;
+}
+
+form{
+
+
+    width: 400px;
+    height: 500px;
+}
+form input{
+    margin-left: 40px;
+    width: 300px;
+    height: 30px;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #d8dade;
+}
+#button{
+    height: 50px;
+    width: 150px;
+
+    margin: auto;
+}
+#edit{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 60px;
+}
+#head{
+    margin: auto;
+    margin-top: 50px;
+    width: 1200px;
+    height: 60px;
+    border: 1px solid black;
+}
+#head-left{
+    margin-top: 5px;
+    float: left;
+    width: 30%;
+}
+#head-right{
+    margin-top: 5px;
+    float: right;
+    width: 45%;
+}
+#logo{
+    margin-left: 25px;
+    border-radius: 5px;
+    float: left;
+    margin-top: 5px;
+    height: 40px;
+    width: 40px;
+}
+#Search{
+    margin-left: 10px;
+    display: inline-block;
+    margin-top: 7px;
+}
+#Search input{
+    border-radius: 5px;
+    width: 200px;
+    height: 25px;
+}
+#Search i{
+    margin-left: 10px;
+    font-size: 25px
+}
+ul{
+
+    list-style-type: none;
+    margin:0px;
+    padding:0px;
+
+
+}
+ul li{
+
+    margin-right: 50px;
+    display: inline-block;
+
+}
+li i{
+    font-size: 35px;
+}
+#than{
+    width: 1200px;
+    margin: auto;
+}
+
+#than-left{
+    float: left;
+    margin-top: 50px;
+    width: 800px;
+    border: 1px solid black;
+}
+#avatar{
+    float: left;
+    width: 100px;
+    height:100px;
+    border-radius: 50%;
+    position: relative;
+    left: 10px;
+    bottom: 50px;
+}
+#cover_image{
+
+    width: 800px;
+    height: 355px;
+}
+#profile{
+    float: left;
+
+    width: 800px;
+    border: 1px solid black;
+    margin-bottom: 50px;
+}
+#btn-edit{
+    float: right;
+    margin: 10px;
+}
+h1{
+    text-align: center;
+}
+#than-left div i{
+    margin: 20px;
+    font-size: 30px;
+}
+p{
+    display: inline-block;
+}
+#than-right{
+    margin-top: 50px;
+    margin-left: 25px;
+    display: inline-block;
+    width: 370px;
+
+}
+#than-right-top{
+    border: 1px solid black;
+}
+#than-right img{
+    width: 370px;
+    height: 300px;
+
+}
+
+#UpImageCover,#UpImageAvatar{
+    display: none;
+}
+#Tright-top, #Tright-bottom{
+    width: 370px;
+    margin: auto;
+}
+#Tright-top button,#Tright-bottom button{
+    margin: 5px;
+    width: 350px;
+}
+
+.modal.open {
+    display: flex;
+}
+
+#post-art {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 3px 7px 2px 7px;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
+
+    <link rel="stylesheet" href="css/style_message.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/style_home.css">
+    <script src="/js/cookie.js"></script>
+
+</head>
+<body>
+<header class = "sticky-header">
+    <nav class="navbar">
+        <a class="brand-logo" href="/">
+            <img class="logo-img" src="images/zalo.png"/>
+        </a>
+
+        <div class="navbar-search">
+            <input id="nav-search" onkeyup="searchUser(event)" type="text" placeholder="Search ...">
+        </div>
+
+        <ul class="pull-right">
+            <li>
+                <a href="/" class="nav-item-home">
+                    <i class="fas fa-home"></i>
+                    <p class="nav-item">HomePage</p>
+                </a>
+            </li>
+            <li>
+                <a href="/profile">
+                    <i class="fas fa-user"></i>
+                    <p class="nav-item">Profile</p>
+                </a>
+            </li>
+            <li>
+                <a href="/friends">
+                    <i class="fas fa-user-friends"></i>
+                    <p class="nav-item">Friends</p>
+                </a>
+            </li>
+            <li>
+                <a href="/message">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <p class="nav-item">Message</p>
+                </a>
+            </li>
+            <li id="noti_Container">
+                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN. -->
+                <div id="noti_Button" onclick="myFunction()">
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <p class="nav-item">Notify</p>
+                    </a>
+                </div>
+
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications" >
+                    <h3>Notifications</h3>
+                    <div style="height:300px;"></div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
+            <li>
+                <a href="/logout" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <p class="nav-item">Log out</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<!-- end header  -->
+
+<main class="grid wide container">
+    <div class="row " style="flex-direction : column">
+        <!-- <br> -->
+        <div>
+            <div class="flex main">
+
+                <div class="col c-6">
+                    <div class="post-content">
+                        <img class="circle1" th:src="${currentUser.avatarUrl}"
+                             th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''"
+                             style=""
+                        >
+                        <input id="post-art" type="text" placeholder="&nbsp;&nbsp;What do you think?"
+                               style="padding: 0.375rem 0.75rem;">
+                    </div>
+
+                    <div class="post-content">
+                        <h2>Bài viết</h2>
+                    </div>
+
+                    <div th:each="posting, iter : ${postings}">
+                        <div class="article post-content">
+                            <div class="flex">
+                                <img class="circle1" th:src="${posting.userDTO.avatarUrl}"
+                                     th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''"
+                                >
+                                <div>
+                                    <div style="margin-top:5px"><a href="" th:text="${posting.userDTO.fullName} ? ${posting.userDTO.fullName} : ${posting.userDTO.username}">Nguyen Van A</a></div>
+                                    <div style="margin-top:5px"><small>November 18</small></div>
+                                </div>
+                            </div>
+
+                            <div class="art-content">
+                                <div th:text="${posting.content}">
+
+                                </div>
+                            </div>
+                            <div style="width: 100%">
+                                <img th:src="${posting.fileUrl}"
+                                     th:onerror="'this.src=\'' + @{/images/no-image-thumb.png} + '\''"
+                                     style="width: 100%">
+                            </div>
+                            <div class="number-action flex">
+                                <div>
+                                    <div id="number-like" th:text="${posting.numberLike} + ' like'">
+                                    </div>
+                                </div>
+                                <div>
+                                    <span th:text="${posting.numberComment} + ' comment'"></span>
+                                </div>
+                            </div>
+
+                            <div class="art-action">
+                                <div th:data-icon-like="${iter.index}"
+                                     th:data-posting-id="${posting.id}"
+                                     class="art-action-icon col c-4" th:onclick="funcLikeIcon(this.getAttribute('data-posting-id'), this.getAttribute('data-icon-like'))">
+                                    <div id="icon-like" th:styleappend="${posting.liked ? 'color: blue' : 'color: black'}" style="margin-left: 40px;">
+                                        <i class="far fa-thumbs-up" ></i> Like
+                                    </div>
+                                </div>
+                                <div class="art-action-icon col c-4" >
+                                    <div style="margin-left: 40px;">
+                                        <i class="far fa-comment-alt"></i> Comment
+                                    </div>
+                                </div>
+                                <div class="art-action-icon col c-4">
+                                    <div style="margin-left: 40px;">
+                                        <i class="far fa-share-square"></i> Share
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- start write a comment -->
+                            <div class="block-comment">
+                                <div style="margin-top: 5px;">
+                                    <img class="circle-comment" th:src="${currentUser.avatarUrl}"
+                                         th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''" alt="Tyler">
+                                </div>
+                                <input id ="write-comment"
+                                       type="text" placeholder="&nbsp;&nbsp;Write a comment..."
+                                style="padding: 0.375rem 0.75rem;">
+                                <button class="btn btn-send-comment" id="btn-send-comment"
+                                        th:data-id="${posting.id}"
+                                        th:data-iter="${iter.index}"
+                                        th:data-avatarUrl="${currentUser.avatarUrl}"
+                                        th:onclick="sendComment(this.getAttribute('data-id'), this.getAttribute('data-iter'),
+                                        this.getAttribute('data-avatarUrl'))"
+                                        value=""><i class="far fa-paper-plane"></i></button>
+                                <input id="posting-id-hidden" type="hidden" th:value="${posting.id}">
+                            </div>
+
+                            <ul id="comment-history" >
+                                <div th:each="comment : ${posting.comments}">
+                                    <li class="flex ">
+                                        <div>
+                                            <img class="circle-comment" th:src="${comment.userComment.avatarUrl}"
+                                                 th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''" alt="Tyler">
+                                        </div>
+                                        <div class="people-comment">
+                                            <div class="name-people-comment" th:text="${comment.userComment.username}"></div>
+                                            <div class="text-comment" th:text="${comment.content}"></div>
+                                        </div>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div th:if="${postings.size() == 0}">
+            <h2 style="text-align: center; margin-top: 50px;">Không có bài viết nào!</h2>
+        </div>
+        <!-- Modal -->
+        <div class="modal">
+            <div class="modal-overlay">
+            </div>
+            <div class="modal-body">
+                <!-- Authen form -->
+                <div class="findJobs-form">
+                    <div class="central-meta postbox">
+                        <span class="create-post">Tạo bài viết</span>
+                        <div class="new-postbox">
+                            <!-- <figure class="ava-figure"> -->
+                            <div class="flex">
+                                <img class="circle1" th:src="${currentUser.avatarUrl}"
+                                     th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''" alt="">
+                                <div style="margin-top:19px" th:text="${currentUser.fullName} ? ${currentUser.fullName} : ${currentUser.username}">Nguyen Van A</div>
+                            </div>
+
+                            <!-- </figure> -->
+                            <div class="newpst-input">
+                                <textarea rows="5" placeholder="Share some what you are thinking?" id="new_status"></textarea>
+                            </div>
+                            <div style="margin-bottom: 15px; width: 100px">
+                                <img id="output" style="width: 100%">
+                            </div>
+                            <input type="hidden" id="fileId">
+                            <div class="attachments">
+                                <ul>
+                                    <li>
+                                            <span class="add-loc">
+                                                <i class="fas fa-images"></i>
+                                                <label class="fileContainer">
+                                                    <input id="file-image" type="file" accept="image/*" onchange="loadFile(event)">
+                                                </label>
+                                            </span>
+                                    </li>
+                                    <li class="preview-btn">
+                                        <button class="post-btn-preview" type="submit" data-ripple="">Preview</button>
+                                    </li>
+                                </ul>
+                                <button class="post-btn" data-ripple="" onclick="postNewStatus()">Post</button>
+                                <button id="btn-close"class="postStatus-form-control-back" data-ripple="">Go Back</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal content-->
+    </div>
+
+    <script id="comment-template" type="text/x-handlebars-template">
+        <div>
+            <li class="flex ">
+                <div>
+                    <img class="circle-comment" src="{{avatarUrl}}" alt="Tyler">
+                </div>
+                <div class="people-comment">
+                    <div class="name-people-comment">{{username}}</div>
+                    <div class="text-comment">{{contentComment}}</div>
+                </div>
+            </li>
+        </div>
+    </script>
+</main>
+<script>
+    var modal = document.getElementsByClassName('modal');
+    var modal_body = document.querySelector('.modal-body');
+
+    var postArt = function(event) {
+        modal[0].classList.add('open');
+    }
+    var btn = document.getElementById('post-art');
+    btn.addEventListener('click',postArt);
+
+    modal_body.addEventListener('click', function(event) {
+        event.stopPropagation();
+    })
+
+    modal[0].onclick = function(event) {
+        modal[0].classList.remove('open');
+    }
+
+    document.getElementById('btn-close').onclick = function() {
+        modal[0].classList.remove('open');
+    }
+</script>
+
+
+<script>
+    document.getElementById("logout").onclick = function(){
+        window.location.href='http://localhost:8081'
+    }
+</script>
+
+<script>
+    const icon_like = document.getElementById('icon-like');
+
+    function funcLikeIcon(postingId, index) {
+        const apiLikePosting = "http://localhost:8081/api/posting/like-posting/"
+        var iconLike = document.querySelectorAll('#icon-like')[+index];
+        var numberLike = document.querySelectorAll('#number-like')[+index];
+        let isLike = false;
+        if(iconLike.style.color === 'blue') {
+            iconLike.style.color = 'black';
+            isLike = false;
+        } else {
+            isLike = true;
+            iconLike.style.color = 'blue';
+        }
+
+        let accessToken = getCookie("jwt-token")
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', apiLikePosting + "" + postingId);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) {
+                alert(`Call API Error`);
+            } else { // show the result
+                let response = xhr.responseText;
+                if (response != null) {
+                    var numberLikePosting = document.querySelectorAll('#number-like')[+index];
+                    var like = numberLikePosting.innerHTML;
+                    var numberLikeP = +like.split(' like')[0];
+                    if (isLike) {
+                        numberLikeP += 1;
+                    } else {
+                        numberLikeP -= 1;
+                    }
+                    numberLikePosting.innerHTML = numberLikeP + ' like';
+                }
+            }
+        };
+    }
+</script>
+<script src="/js/home.js"></script>
+</body>
+</html>

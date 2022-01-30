@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="vn">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/friend.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="/js/friend.js"></script>
+    <script src="/js/cookie.js"></script>
+
+    <title></title>
+
+</head>
+<header class = "sticky-header">
+    <nav class="navbar">
+        <a class="brand-logo" href="/">
+            <img class="logo-img" src="images/zalo.png"/>
+        </a>
+
+        <div class="navbar-search">
+            <input id="nav-search" onkeyup="searchUser(event)" type="text" placeholder="Search ...">
+        </div>
+
+        <ul class="pull-right">
+            <li>
+                <a href="/">
+                    <i class="fas fa-home"></i>
+                    <p class="nav-item">HomePage</p>
+                </a>
+            </li>
+            <li>
+                <a href="/profile">
+                    <i class="fas fa-user"></i>
+                    <p class="nav-item">Profile</p>
+                </a>
+            </li>
+            <li>
+                <a href="/friends">
+                    <i class="fas fa-user-friends"></i>
+                    <p class="nav-item">Friends</p>
+                </a>
+            </li>
+            <li class="nav-item-mess">
+                <a href="/message">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <p class="nav-item">Message</p>
+                </a>
+            </li>
+            <li id="noti_Container">
+                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN. -->
+                <div id="noti_Button" onclick="myFunction()">
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <p class="nav-item">Notify</p>
+                    </a>
+                </div>
+
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications" >
+                    <h3>Notifications</h3>
+                    <div style="height:300px;"></div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
+            <li>
+                <a href="/logout" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <p class="nav-item">Log out</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<body>
+
+<div id="than" style="margin-top: 50px; margin-bottom: 20px">
+    <div id="MakeFriend">
+        <h1 style="margin-bottom: 15px">Lời mời kết bạn</h1>
+        <div id="People" th:each="friendRequest: ${friendRequests}">
+            <div class="Image_Friend">
+                <img th:src="${friendRequest.avatarUrl}" th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''"/>
+                <div style="text-align: center; color: red; font-weight: bold"><span th:text="${friendRequest.username}"></span></div>
+                <button th:data-id="${friendRequest.id}"
+                        th:onclick="approveFriend(this.getAttribute('data-id'))">Xác nhận</button>
+                <button>Xóa</button>
+            </div>
+        </div>
+    </div>
+    <div th:if="${friendRequests.size() == 0}" style="margin-bottom: 40px">
+        <h4>Khong co loi moi ket ban!</h4>
+    </div>
+
+    <div id="ListFriend">
+        <h1>Bạn bè</h1>
+<!--        <div id="SearchFriend">-->
+<!--            <input type="text" name="Search" placeholder="Search User">-->
+<!--            <i style=" " class="fas fa-search"></i>-->
+<!--        </div>-->
+        <div id="Friends" th:if="${friends.size() > 0}">
+            <div th:each="friend: ${friends}">
+                <div class="Friend">
+                    <img th:src="${friend.avatarUrl}" th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''">
+                    <div class="infor">
+                        <h2 th:text="${friend.username}"></h2>
+                        <div style="clear: left;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p style="display: inline-block; margin-left: 10px;" th:text="${friend.address} ? ${friend.address} : 'Việt Nam'">Việt Nam</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone"></i><p style="display: inline-block;margin-left: 10px;" th:text="${friend.phoneNumber} ? ${friend.phoneNumber} : 'Không xác định'">0817819973</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope"></i><p style="display: inline-block;margin-left: 10px;" th:text="${friend.email} ? ${friend.email} : 'Không xác định'"></p>
+                        </div>
+                        <button>Xem thông tin</button>
+                        <button th:data-id="${friend.id}"
+                                th:onclick="cancelFriend(this.getAttribute('data-id'))">Hủy Kết Bạn</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${friends.size() == 0}" style="margin-bottom: 40px">
+            <h4>Bạn chưa kết bạn với ai!</h4>
+        </div>
+    </div>
+
+
+    <div id="list-friend-can-known" style="margin-top: 50px; margin-bottom: 20px">
+        <h1 style="margin-bottom: 20px">Những người bạn có thể biết</h1>
+        <div id="friend-can-known">
+            <div th:each="notFriend: ${userNotFriends}">
+                <div class="Friend">
+                    <img th:src="${notFriend.avatarUrl}" th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''">
+                    <div class="infor">
+                        <h2 th:text="${notFriend.username}"></h2>
+                        <div style="clear: left;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p style="display: inline-block; margin-left: 10px;" th:text="${notFriend.address} ? ${notFriend.address} : 'Việt Nam'">Việt Nam</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone"></i><p style="display: inline-block;margin-left: 10px;" th:text="${notFriend.phoneNumber} ? ${notFriend.phoneNumber} : 'Không xác định'">0817819973</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope"></i><p style="display: inline-block;margin-left: 10px;" th:text="${notFriend.email} ? ${notFriend.email} : 'Không xác định'"></p>
+                        </div>
+                        <button>Xem thông tin</button>
+                        <button th:data-id="${notFriend.id}"
+                                th:onclick="addFriend(this.getAttribute('data-id'))"
+                        >Kết bạn</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function searchUser(event) {
+        const urlSearchUser = 'http://localhost:8081/users';
+        var keyword = document.querySelector("#nav-search").value;
+        if (event.keyCode === 13) {
+            window.location.href = urlSearchUser + "?keyword=" + keyword;
+        }
+    }
+</script>
+</body>
+</html>

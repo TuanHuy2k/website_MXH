@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="/js/login.js"></script>
+  </head>
+<body>
+  <body id="particles-js"></body>
+  <div class="animated bounceInDown">
+    <div class="container">
+      <span class="error animated tada" id="msg"></span>
+      <form name="form1" class="box">
+        <h4>Welcome to<span> My Website</span></h4>
+        <h5>Sign in to your account.</h5>
+          <input type="text" id="userNameLogin" name="email" placeholder="Username" autocomplete="off" required>
+          <i class="typcn typcn-eye" id="eye"></i>
+          <input type="password" name="password"
+                 placeholder="Passsword" id="passwordLogin" autocomplete="off" required>
+          <label>
+            <input type="checkbox">
+            <span></span>
+            <small class="rmb">Remember account</small>
+          </label>
+          <a href="#" class="forgetpass">Forget Password?</a>
+          <input onclick="login()" value="Sign in" class="btnLogin" type="button">
+        </form>
+          <a href="/register" class="dnthave">Don’t have an account? Sign up</a>
+    </div> 
+         <div class="footer">
+        <span>Made by <i class="nhom10"></i><a href="https://drive.google.com/drive/u/0/folders/1R1kXzkosAA0B9S6Jgg22QDmVBk7diXDK"> Group 10</a></span>
+      </div>
+  </div>
+</body>
+
+<script>
+  var inputPassword = document.querySelector('#passwordLogin');
+  inputPassword.addEventListener('keyup', function (event) {
+    if (event.keyCode === 13) {
+      login();
+    }
+  });
+</script>
+</html>

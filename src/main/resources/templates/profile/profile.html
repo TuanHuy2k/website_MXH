@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="vn">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/style_home.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <script src="/js/profile.js"></script>
+    <script src="/js/cookie.js"></script>
+    <title></title>
+
+</head>
+
+<body>
+<script type="text/javascript">
+    function Fix(){
+        document.getElementById("Fix").style.display = 'inline-block';
+        document.getElementById("body").style.opacity='0.5';
+    }
+    // function Edit(){
+    //     document.getElementById("Fix").style.display = 'none';
+    //     document.getElementById("body").style.opacity='1';
+    // }
+    function ChooseFileCover() {
+        document.getElementById("UpImageCover").click();
+    }
+    function ChooseFileAvatar() {
+        document.getElementById("UpImageAvatar").click();
+    }
+</script>
+<div id="Fix">
+    <form>
+        <h1>Update contact information</h1>
+        <input type="text" id="fullName" name="Name" placeholder="Tên" th:value="${currentUser.fullName}">
+        <input type="text" id="address" name="Address" placeholder="Địa chỉ" th:value="${currentUser.address}">
+        <input type="text" id="phoneNumber" name="Phone" placeholder="Điện thoại" th:value="${currentUser.phoneNumber}">
+        <input type="text" id="email" name="Mail" placeholder="Mail" th:value="${currentUser.email}">
+        <div id="buttonUpdate" style="text-align: center; margin-top: 40px">
+            <div id="btn-close" class="button" onclick="cancelUpdate()">Cancel</div>
+            <div onclick="updateProfile()" class="button" id="EditUser">Update</div>
+        </div>
+    </form>
+</div>
+<header class = "sticky-header">
+    <nav class="navbar">
+        <a class="brand-logo" href="/">
+            <img class="logo-img" src="images/zalo.png"/>
+        </a>
+
+        <div class="navbar-search">
+            <input id="nav-search" onkeyup="searchUser(event)" type="text" placeholder="Search ...">
+        </div>
+
+        <ul class="pull-right">
+            <li>
+                <a href="/">
+                    <i class="fas fa-home"></i>
+                    <p class="nav-item">HomePage</p>
+                </a>
+            </li>
+            <li>
+                <a href="/profile">
+                    <i class="fas fa-user"></i>
+                    <p class="nav-item">Profile</p>
+                </a>
+            </li>
+            <li>
+                <a href="/friends">
+                    <i class="fas fa-user-friends"></i>
+                    <p class="nav-item">Friends</p>
+                </a>
+            </li>
+            <li class="nav-item-mess">
+                <a href="/message">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <p class="nav-item">Message</p>
+                </a>
+            </li>
+            <li id="noti_Container">
+                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN. -->
+                <div id="noti_Button" onclick="myFunction()">
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <p class="nav-item">Notify</p>
+                    </a>
+                </div>
+
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications" >
+                    <h3>Notifications</h3>
+                    <div style="height:300px;"></div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
+            <li>
+                <a href="/logout" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <p class="nav-item">Log out</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div id="body">
+
+    <div id="than">
+        <div id="than-left">
+            <div id="image_profile">
+
+                <img id="cover_image" th:src="${currentUser.coverAvatarUrl}"
+                     th:onerror="'this.src=\'' + @{/images/default-cover-avatar.jpg} + '\''">
+
+
+            </div>
+            <div id="profile">
+                <img id="avatar" th:src="${currentUser.avatarUrl}"
+                     th:onerror="'this.src=\'' + @{/images/default-avatar.jpg} + '\''">
+                <button onclick="Fix()" id="edit">Edit</button>
+                <h1 th:text="${currentUser.fullName} ? ${currentUser.fullName + '(' + currentUser.username + ')'} : ${currentUser.username}"></h1>
+                <div style="clear: left;">
+                    <i class="fas fa-map-marker-alt"></i><p style="display: inline-block;" th:text="${currentUser.address} ? ${currentUser.address} : 'Việt Nam'">Nghệ an</p>
+                </div>
+                <div>
+                    <i class="fas fa-phone"></i><p style="display: inline-block;" th:text="${currentUser.phoneNumber} ? ${currentUser.phoneNumber} : 'Không xác định'">0817819973</p>
+                </div>
+                <div>
+                    <i class="fas fa-envelope"></i><p style="display: inline-block;" th:text="${currentUser.email} ? ${currentUser.email} : 'Không xác định'">mail</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="than-right">
+        <div id="than-right-top">
+            <div id="Tright-top">
+                <h2>Edit your cover image</h2>
+                <input id="UpImageCover" type="file" name="" placeholder="Choose file" onchange="loadFileCover(event)">
+                <button onclick="ChooseFileCover()" type="file">Choose a file</button>
+                <button onclick="updateAvatarCover()">Update</button>
+                <input type="hidden" id="coverImgId">
+            </div>
+            <div id="Tright-bottom">
+                <h2>Edit your avatar</h2>
+                <input id="UpImageAvatar" type="file" name="" placeholder="Choose file" onchange="loadFileAvatar(event)">
+                <button  onclick="ChooseFileAvatar()">Choose a file</button>
+                <button onclick="updateAvatar()">Update</button>
+                <input type="hidden" id="avatarImgId">
+            </div>
+
+        </div>
+        <img src="images/Linkedin.jpg">
+    </div>
+</div>
+</div>
+
+<script>
+    const icon_like = document.getElementById('icon-like');
+
+    function funcLikeIcon() {
+        if(icon_like.style.color === 'blue') {
+            icon_like.style.color = 'black';
+        } else {
+            icon_like.style.color = 'blue';
+        }
+    }
+</script>
+
+<script>
+    function searchUser(event) {
+        const urlSearchUser = 'http://localhost:8081/users';
+        var keyword = document.querySelector("#nav-search").value;
+        if (event.keyCode === 13) {
+            window.location.href = urlSearchUser + "?keyword=" + keyword;
+        }
+    }
+
+    var modal = document.getElementsByClassName('modal');
+    var modal_body = document.querySelector('.modal-body');
+
+    function cancelUpdate() {
+        document.getElementById("Fix").style.display = 'none';
+        document.getElementById("body").style.opacity='1';
+    };
+
+    function updateProfile() {
+
+        var apiUpdateUser = "http://localhost:8081/api/user/profile"
+
+        var fullName = document.getElementById("fullName").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var email = document.getElementById("email").value;
+        var address = document.getElementById("address").value;
+
+        let accessToken = getCookie("jwt-token")
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', apiUpdateUser);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var userUpdateRequest = {
+            fullName: fullName,
+            phoneNumber: phoneNumber,
+            mail: email,
+            address: address
+        }
+
+        xhr.send(JSON.stringify(userUpdateRequest));
+        xhr.onload = function() {
+            if (xhr.status != 200) {
+                alert(`Call API Error`);
+            } else { // show the result
+                let response = xhr.responseText;
+                if (response != null) {
+                    window.location.href = "http://localhost:8081/profile";
+                }
+            }
+        };
+    }
+</script>
+</body>
+</html>
